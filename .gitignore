@@ -1,0 +1,15 @@
+.env
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+.claude/
+
+# Data: ship only the small prebuilt files the app needs, so the server never rebuilds them.
+data/*
+!data/tm/
+data/tm/*
+!data/tm/*.parquet
+!data/models/
+!data/cache/
+data/cache/*
+!data/cache/pool_v2.parquet
