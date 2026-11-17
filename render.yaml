@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: kashaf-scout
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: KASHAF_HOSTED
+        value: "1"
+      - key: DAILY_AI_LIMIT
+        value: "20"
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: APP_PASSWORD
+        sync: false

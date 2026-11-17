@@ -115,6 +115,9 @@ def appearances() -> pd.DataFrame:
 @lru_cache(maxsize=1)
 def reference_date() -> pd.Timestamp:
     """'Now' for the dataset = last appearance date (keeps ages/contracts consistent with stats)."""
+    txt = TM_DIR / "reference_date.txt"
+    if txt.exists():
+        return pd.Timestamp(txt.read_text().strip())
     pq = TM_DIR / "appearances.parquet"
     if pq.exists():
         d = pd.read_parquet(pq, columns=["date"])["date"]

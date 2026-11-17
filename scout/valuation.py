@@ -34,6 +34,12 @@ DEFAULT_WAGE_RATIO = (0.06, 0.11)
 
 @lru_cache(maxsize=1)
 def feature_frame() -> pd.DataFrame:
+    derived = tm.TM_DIR / "feature_frame.parquet"  # prebuilt (see build_derived.py) to keep server memory low
+    if derived.exists():
+        f = pd.read_parquet(derived)
+        for c in CATEGORICAL:
+            f[c] = f[c].astype("category")
+        return f
     p = tm.players()
     last = int(p["last_season"].max())
     ls = league_seasons()

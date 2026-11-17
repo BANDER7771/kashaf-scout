@@ -1,4 +1,4 @@
-.env
+﻿.env
 .streamlit/secrets.toml
 __pycache__/
 *.pyc
@@ -9,6 +9,8 @@ data/*
 !data/tm/
 data/tm/*
 !data/tm/*.parquet
+!data/tm/reference_date.txt
+data/tm/appearances.parquet
 !data/models/
 !data/cache/
 data/cache/*

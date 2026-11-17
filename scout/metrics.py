@@ -31,6 +31,9 @@ def percentile(value: float, pool: pd.Series) -> float:
 @lru_cache(maxsize=1)
 def league_seasons() -> pd.DataFrame:
     """Domestic-league totals per player-season (+ team games for availability)."""
+    derived = tm.TM_DIR / "league_seasons.parquet"  # prebuilt so servers never hold the full appearances table
+    if derived.exists():
+        return pd.read_parquet(derived)
     a = tm.appearances()
     a = a[a["is_league"]]
     g = a.groupby(["player_id", "season"])
