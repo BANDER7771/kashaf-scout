@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>كشّاف - منصة تحليل اللاعبين</title>
+  <meta name="description" content="معاينة تجريبية لمشروع كشّاف لتحليل وتقييم لاعبي كرة القدم">
+  <style>
+    :root {
+      --ink: #eaf4ef;
+      --muted: #a9bdb3;
+      --green: #32d296;
+      --line: rgba(255,255,255,.09);
+      --panel: rgba(13, 37, 29, .82);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Tahoma, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(50,210,150,.14), transparent 28rem),
+        linear-gradient(145deg, #07110d, #0b2018 65%, #08130f);
+    }
+    .wrap { max-width: 1080px; margin: auto; padding: 28px 20px 64px; }
+    nav { display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 20px; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      color: #092016;
+      background: var(--green);
+      font-size: 22px;
+    }
+    .badge {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      font-size: 13px;
+    }
+    .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 28px; padding: 72px 0 38px; align-items: center; }
+    h1 { margin: 0 0 18px; font-size: clamp(38px, 7vw, 68px); line-height: 1.05; }
+    .accent { color: var(--green); }
+    .lead { margin: 0; max-width: 620px; color: var(--muted); line-height: 2; font-size: 18px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      border-radius: 12px;
+      padding: 0 18px;
+      text-decoration: none;
+      color: #092016;
+      background: var(--green);
+      font-weight: 800;
+    }
+    .button.secondary { color: var(--ink); border: 1px solid var(--line); background: transparent; }
+    .card {
+      min-height: 330px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      background: var(--panel);
+      box-shadow: 0 24px 70px rgba(0,0,0,.24);
+    }
+    .player { display: flex; align-items: center; gap: 16px; }
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 74px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #2fe0a1, #177d61);
+      color: #082117;
+      font-size: 28px;
+      font-weight: 900;
+    }
+    .player h2 { margin: 0 0 6px; }
+    .muted { color: var(--muted); }
+    .score { display: flex; justify-content: space-between; margin: 24px 0 10px; }
+    .meter { height: 9px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.07); }
+    .meter span { display: block; height: 100%; width: 86%; border-radius: inherit; background: var(--green); }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 24px; }
+    .stat { border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; text-align: center; }
+    .stat strong { display: block; margin-bottom: 5px; color: var(--green); font-size: 20px; }
+    .stat small { color: var(--muted); }
+    .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .feature { border: 1px solid var(--line); border-radius: 18px; padding: 20px; background: rgba(255,255,255,.025); }
+    .feature h3 { margin: 0 0 8px; }
+    .feature p { margin: 0; color: var(--muted); line-height: 1.8; }
+    footer { margin-top: 42px; color: var(--muted); text-align: center; font-size: 13px; }
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; padding-top: 48px; }
+      .features { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav>
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⚽</span>
+        <span>كشّاف</span>
+      </div>
+      <span class="badge">معاينة GitHub Pages</span>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <h1>تحليل اللاعبين <span class="accent">بوضوح أكبر</span></h1>
+        <p class="lead">معاينة ثابتة لواجهة منصة كشّاف لتقييم اللاعبين، تحليل الأسلوب، مقارنة البدلاء، وتقدير القيمة السوقية.</p>
+        <div class="actions">
+          <a class="button" href="../">ملف المشروع</a>
+          <a class="button secondary" href="https://streamlit.io" target="_blank" rel="noreferrer">تشغيل النسخة التفاعلية</a>
+        </div>
+      </div>
+
+      <div class="card" aria-label="مثال معاينة لاعب">
+        <div class="player">
+          <div class="avatar">ك</div>
+          <div>
+            <h2>مثال لاعب</h2>
+            <span class="muted">وسط • بطولات متعددة</span>
+          </div>
+        </div>
+        <div class="score"><strong>تقييم الأسلوب</strong><strong class="accent">86</strong></div>
+        <div class="meter"><span></span></div>
+        <div class="stats">
+          <div class="stat"><strong>86</strong><small>صناعة اللعب</small></div>
+          <div class="stat"><strong>82</strong><small>التمرير</small></div>
+          <div class="stat"><strong>79</strong><small>الاستحواذ</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <article class="feature">
+        <h3>تحليل متكامل</h3>
+        <p>ملخص أداء، الأسلوب، المسيرة، الملاءمة مع المدرب والنادي والمخاطر.</p>
+      </article>
+      <article class="feature">
+        <h3>بدلاء ذكيّة</h3>
+        <p>مطابقة اللاعبين على بصمة الأسلوب ومستوى الملاءمة والسعر.</p>
+      </article>
+      <article class="feature">
+        <h3>بحث بالمواصفات</h3>
+        <p>وصف احتياجك بالعربية أو الإنجليزية واحصل على قائمة مرشحة مترتبة.</p>
+      </article>
+    </section>
+
+    <footer>نسخة معاينة ثابتة — لا تعمل ميزات الذكاء الاصطناعي أو قواعد البيانات الحية على GitHub Pages.</footer>
+  </main>
+</body>
+</html>
