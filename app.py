@@ -56,19 +56,19 @@ def warm_pool():
     return len(pool.pool())
 
 
-@st.cache_data(ttl=6 * 3600, show_spinner="جمع بيانات المباريات والقيم السوقية...")
+@st.cache_data(ttl=6 * 3600, max_entries=16, show_spinner="جمع بيانات المباريات والقيم السوقية...")
 def get_base(player_id: int) -> dict:
     return profile.build_base(player_id)
 
 
-@st.cache_data(ttl=24 * 3600, show_spinner="البحث عن لاعبين بنفس الأسلوب...")
+@st.cache_data(ttl=24 * 3600, max_entries=32, show_spinner="البحث عن لاعبين بنفس الأسلوب...")
 def get_alternatives(player_id: int, scope: str) -> pd.DataFrame:
     b = get_base(player_id)
     return pool.alternatives(b["pos_group"], b["rating_adj"], b["valuation"]["base_value"], float(b["player"]["age"] or 27),
                              b["fotmob_id"], profile.style_flat(b), scope=scope, league=b["league_code"])
 
 
-@st.cache_data(show_spinner="تجهيز ملف PDF...")
+@st.cache_data(max_entries=8, show_spinner="تجهيز ملف PDF...")
 def get_pdf(player_id: int, club, coach, notes, saved_at, full: bool) -> bytes:
     b = get_base(player_id)
     syn_ = (ai.load_cached(player_id, club, coach, notes) or {}).get("synthesis")

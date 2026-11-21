@@ -101,6 +101,32 @@ def transfers() -> pd.DataFrame:
     return df
 
 
+@lru_cache(maxsize=64)
+def valuations_for(player_id: int) -> pd.DataFrame:
+    """One player's value history; avoids keeping the whole ~130MB table in a small server's RAM."""
+    pq = TM_DIR / "player_valuations.parquet"
+    if pq.exists():
+        df = pd.read_parquet(pq, filters=[("player_id", "==", int(player_id))]).copy()
+    else:
+        full = valuations()
+        df = full[full["player_id"] == player_id].copy()
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    return df
+
+
+@lru_cache(maxsize=64)
+def transfers_for(player_id: int) -> pd.DataFrame:
+    """One player's transfers; avoids keeping the whole ~60MB table in a small server's RAM."""
+    pq = TM_DIR / "transfers.parquet"
+    if pq.exists():
+        df = pd.read_parquet(pq, filters=[("player_id", "==", int(player_id))]).copy()
+    else:
+        full = transfers()
+        df = full[full["player_id"] == player_id].copy()
+    df["transfer_date"] = pd.to_datetime(df["transfer_date"], errors="coerce")
+    return df
+
+
 @lru_cache(maxsize=1)
 def appearances() -> pd.DataFrame:
     df = _load("appearances", usecols=[

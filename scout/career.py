@@ -62,8 +62,7 @@ def current_season() -> int:
 
 
 def market_values(player_id: int, fm_values: pd.DataFrame) -> pd.DataFrame:
-    v = tm.valuations()
-    v = v[v["player_id"] == player_id].sort_values("date")[["date", "market_value_in_eur", "current_club_name"]]
+    v = tm.valuations_for(player_id).sort_values("date")[["date", "market_value_in_eur", "current_club_name"]]
     v = v.assign(source="Transfermarkt")
     if not fm_values.empty:
         newer = fm_values[fm_values["date"] > (v["date"].max() if not v.empty else pd.Timestamp.min)]
@@ -72,8 +71,8 @@ def market_values(player_id: int, fm_values: pd.DataFrame) -> pd.DataFrame:
 
 
 def player_transfers(player_id: int) -> pd.DataFrame:
-    t = tm.transfers()
-    t = t[(t["player_id"] == player_id) & (t["transfer_date"] <= pd.Timestamp.now() + pd.Timedelta(days=30))]
+    t = tm.transfers_for(player_id)
+    t = t[t["transfer_date"] <= pd.Timestamp.now() + pd.Timedelta(days=30)]
     return t.sort_values("transfer_date")[["transfer_date", "transfer_season", "from_club_name", "to_club_name",
                                            "transfer_fee", "market_value_in_eur"]]
 

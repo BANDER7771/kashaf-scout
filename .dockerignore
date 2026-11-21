@@ -1,6 +1,15 @@
 .env
-data/
+.git/
 __pycache__/
+**/__pycache__/
 *.pyc
 .claude/
 deploy.py
+# Ship only the small prebuilt tables; never the raw Transfermarkt archives or runtime caches.
+data/tm/*.csv.gz
+data/tm/appearances.parquet
+data/cache/ai/
+data/cache/fotmob/
+data/cache/reports/
+data/cache/understat/
+

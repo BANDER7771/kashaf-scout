@@ -102,6 +102,17 @@ scout/
 ```
 
 
+## النشر على Railway (Docker)
+
+1. ارفع المشروع إلى GitHub ثم من Railway: **New Project → Deploy from GitHub repo**.
+2. Railway يكتشف `Dockerfile` و`railway.toml` تلقائيًا، وفحص الصحة على `/_stcore/health`.
+3. أضف المتغيرات: `DEEPSEEK_API_KEY` و`APP_PASSWORD` و`DAILY_AI_LIMIT`.
+4. استخدم **1GB** ذاكرة لتوليد PDF بثبات (Chromium يستهلك ~200MB إضافية)، و512MB تكفي للتصفح والتحليل.
+5. الجداول الجاهزة (~20MB) مضمّنة في الصورة. بعد تحديث بيانات Transfermarkt شغّل
+   `python build_derived.py` (يعيد بناء الجداول والموديل) ثم اعمل commit قبل النشر.
+
+> نظام ملفات Railway مؤقت، لذا كاش التحليلات الذكية وملفات PDF المؤقتة تُفقد عند كل إعادة نشر.
+
 ## النشر على Hugging Face Spaces (مجاني)
 
 ```powershell

@@ -4,6 +4,7 @@ Pool = every regular (900+ min, last complete season) from FotMob's league stat 
 Transfermarkt for age, market value, contract, foot and height."""
 from __future__ import annotations
 
+import os
 from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 
@@ -18,6 +19,8 @@ from .data_tm import normalize_name
 
 MIN_MINUTES = 900
 POOL_FILE = CACHE_DIR / "pool_v2.parquet"
+# On a hosted server keep using the shipped pool: rebuilding it needs calls to 16 leagues and can OOM.
+POOL_TTL_DAYS = max(1, int(os.environ.get("KASHAF_POOL_TTL_DAYS", "7")))
 
 # feature -> (FotMob league stat list, list is a season total that must be turned into per-90)
 STYLE_STATS = {
@@ -137,7 +140,7 @@ def _last_complete_season() -> int:
 @lru_cache(maxsize=1)
 def pool() -> pd.DataFrame:
     season = _last_complete_season()
-    if POOL_FILE.exists() and (pd.Timestamp.now() - pd.Timestamp(POOL_FILE.stat().st_mtime, unit="s")).days < 7:
+    if POOL_FILE.exists() and (pd.Timestamp.now() - pd.Timestamp(POOL_FILE.stat().st_mtime, unit="s")).days < POOL_TTL_DAYS:
         return pd.read_parquet(POOL_FILE)
     jobs = [(lid, code, cal, season + 1 if cal else season) for lid, (code, cal) in POOL_LEAGUES.items()]
     with ThreadPoolExecutor(4) as ex:

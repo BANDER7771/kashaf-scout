@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN useradd -m -u 1000 user
 USER user
 ENV HOME=/home/user PATH=/home/user/.local/bin:$PATH CHROME_PATH=/usr/bin/chromium \
-    KASHAF_HOSTED=1 PYTHONUNBUFFERED=1
+    KASHAF_HOSTED=1 PYTHONUNBUFFERED=1 KASHAF_POOL_TTL_DAYS=30 MALLOC_ARENA_MAX=2
 WORKDIR /home/user/app
 
 COPY --chown=user requirements.txt .
