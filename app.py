@@ -113,12 +113,23 @@ elif not ai_on and not settings.hosted():
         if k2.button("حفظ وربط", type="primary", use_container_width=True) and key.strip():
             settings.save_deepseek_key(key)
             st.rerun()
+elif not ai_on and settings.hosted():
+    st.warning("الذكاء الاصطناعي غير مضبوط على الخادم: أضف `DEEPSEEK_API_KEY` في متغيرات Railway "
+               "(Variables) ثم أعد النشر، وسيظهر زر تشغيل التحليل تلقائيًا.")
 
 with st.sidebar:
     st.markdown("### الإعدادات")
     st.caption(f"الذكاء الاصطناعي: DeepSeek ({settings.deepseek_model()})")
     if quota is not None:
         st.caption(f"التحليلات المتبقية اليوم: {quota}")
+    if ai_on:
+        with st.expander("فحص اتصال الذكاء الاصطناعي"):
+            if st.button("اختبار الاتصال الآن", key="ai_ping"):
+                try:
+                    ai.chat('Return JSON only: {"ok": true}', 'Return {"ok": true}', max_tokens=30, temperature=0)
+                    st.success("DeepSeek متصل ويعمل.")
+                except ai.AIError as e:
+                    st.error(str(e))
     if ai_on and not settings.hosted():
         with st.expander("تغيير مفتاح DeepSeek"):
             new_key = st.text_input("المفتاح الجديد", type="password")
@@ -284,12 +295,13 @@ def player_view(pid: int) -> None:
     if run_now:
         with st.status("جارٍ التحليل الذكي...", expanded=True) as status:
             try:
-                settings.count_ai_use()
                 cached = profile.run_ai(base, club, coach_in, progress=status.write, notes=notes_in,
                                         langs=st.session_state.get("langs"))
+                settings.count_ai_use()  # only successful analyses consume the daily quota
                 status.update(label="اكتمل التحليل", state="complete", expanded=False)
                 st.rerun()
             except ai.AIError as e:
+                print(f"[AI ERROR] player={pid} club={club} coach={coach_in}: {e}", flush=True)
                 status.update(label="تعذّر إكمال التحليل الذكي", state="error")
                 st.error(str(e))
 

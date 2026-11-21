@@ -36,12 +36,13 @@ def get(name: str, default: str | None = None) -> str | None:
 
 
 def deepseek_key() -> str | None:
-    key = get("DEEPSEEK_API_KEY")
+    # Strip whitespace/newlines: keys pasted into a host's dashboard often carry them and would break the header.
+    key = (get("DEEPSEEK_API_KEY") or "").strip()
     return key if key and not key.endswith("...") else None
 
 
 def deepseek_model() -> str:
-    return get("DEEPSEEK_MODEL", DEEPSEEK_DEFAULT_MODEL)
+    return (get("DEEPSEEK_MODEL") or DEEPSEEK_DEFAULT_MODEL).strip()
 
 
 def save_deepseek_key(key: str) -> None:
@@ -56,7 +57,7 @@ def save_deepseek_key(key: str) -> None:
 
 def hosted() -> bool:
     """On a public server the key comes only from secrets - visitors can never see or change it."""
-    return (get("KASHAF_HOSTED") or "").lower() in ("1", "true", "yes")
+    return (get("KASHAF_HOSTED") or "").strip().lower() in ("1", "true", "yes")
 
 
 def app_password() -> str | None:

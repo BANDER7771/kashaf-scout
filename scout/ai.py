@@ -40,13 +40,13 @@ def chat(system: str, user: str, max_tokens: int = 8000, temperature: float = 0.
                               headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
         except requests.RequestException as e:
             if attempt == 2:
-                raise AIError("تعذّر الاتصال بـ DeepSeek - تحقق من الإنترنت.") from e
+                raise AIError("تعذّر الاتصال بـ DeepSeek - تحقق من الإنترنت أو من خروج الشبكة على الخادم.") from e
             time.sleep(3 * (attempt + 1))
             continue
         if r.status_code == 401:
-            raise AIError("مفتاح DeepSeek غير صالح.")
+            raise AIError("مفتاح DeepSeek غير صالح - تحقق من قيمة DEEPSEEK_API_KEY على الخادم.")
         if r.status_code == 402:
-            raise AIError("رصيد حساب DeepSeek غير كافٍ.")
+            raise AIError("رصيد حساب DeepSeek غير كافٍ - اشحن الحساب من platform.deepseek.com ثم أعد المحاولة.")
         if r.status_code in (429, 500, 502, 503) and attempt < 2:
             time.sleep(5 * (attempt + 1))
             continue
